@@ -5,7 +5,7 @@ import AddForm from './components/AddForm'
 import {useState} from 'react'
 function App() {
   const [tasks,setTask]=useState([{id:1,text:"Buy Groceries",day:"Monday",reminder:true,},{id:2,text:"Pick up Mom",day:"Tuesday",reminder:true,},{id:3,text:"Call Jake",day:"Friday",reminder:true,},{id:4,text:"Pack Lunch",day:"Sunday",reminder:true,}])
-  
+  const [showAddTask,setShowAddTask]=useState('false')
 
   //Delete Task
   const deleteTask=(id)=>{
@@ -15,8 +15,14 @@ setTask(tasks.filter((task)=>{
   }
 
   //add task
-  const addTask =()=>{
-    console.log("task added")
+  const addTask =(taskDetails)=>{
+
+    const id = Math.floor(Math.random() * 10000) +1 
+    const newTask={id,...taskDetails}
+    console.log(newTask)
+    setTask([...tasks,newTask])
+    
+   
   }
 
   //Toggle Reminder
@@ -34,8 +40,8 @@ setTask(tasks.filter((task)=>{
   let name="Task Tracker"
   return (
     <div className="container">
-     <Header title={name}/>
-     <AddForm taskAdd={addTask} />
+     <Header title={name} toggleButton={()=> { setShowAddTask(!showAddTask)}} showAdd={showAddTask}/>
+     { showAddTask && <AddForm taskAdd={addTask} />}
      {tasks.length>0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />: "No tasks today"}
     </div> 
   );
