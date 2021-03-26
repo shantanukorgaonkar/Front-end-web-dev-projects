@@ -1,10 +1,12 @@
 import React from 'react'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Tasks from './components/Tasks'
 import AddForm from './components/AddForm'
+import About from './components/About'
 import {useState} from 'react'
 function App() {
-  const [tasks,setTask]=useState([{id:1,text:"Buy Groceries",day:"Monday",reminder:true,},{id:2,text:"Pick up Mom",day:"Tuesday",reminder:true,},{id:3,text:"Call Jake",day:"Friday",reminder:true,},{id:4,text:"Pack Lunch",day:"Sunday",reminder:true,}])
+  const [tasks,setTask]=useState([])
   const [showAddTask,setShowAddTask]=useState('false')
 
   //Delete Task
@@ -43,6 +45,8 @@ setTask(tasks.filter((task)=>{
      <Header title={name} toggleButton={()=> { setShowAddTask(!showAddTask)}} showAdd={showAddTask}/>
      { showAddTask && <AddForm taskAdd={addTask} />}
      {tasks.length>0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />: "No tasks today"}
+     <Footer />
+
     </div> 
   );
 }
