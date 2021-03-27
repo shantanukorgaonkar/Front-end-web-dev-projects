@@ -5,6 +5,8 @@ import Tasks from './components/Tasks'
 import AddForm from './components/AddForm'
 import About from './components/About'
 import {useState} from 'react'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
+
 function App() {
   const [tasks,setTask]=useState([])
   const [showAddTask,setShowAddTask]=useState('false')
@@ -40,14 +42,22 @@ setTask(tasks.filter((task)=>{
 
 
   let name="Task Tracker"
+ 
   return (
+    <Router>
     <div className="container">
      <Header title={name} toggleButton={()=> { setShowAddTask(!showAddTask)}} showAdd={showAddTask}/>
-     { showAddTask && <AddForm taskAdd={addTask} />}
+     
+     <Route path="/" exact render={(props)=>(
+       <>
+       { showAddTask && <AddForm taskAdd={addTask} />}
      {tasks.length>0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />: "No tasks today"}
+       </>
+     )}/>
+     <Route path="/about" component={About} />
      <Footer />
-
     </div> 
+    </Router>
   );
 }
 
