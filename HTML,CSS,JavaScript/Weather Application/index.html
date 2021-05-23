@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anywhere Weather App</title>
+
+    <link rel="stylesheet" href="https://bootswatch.com/5/cerulean/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto text-center bg-primary mt-5 p-5 rounded">
+                <h1 id="location"></h1>
+                <h3 class="text-dark" id="weather"></h3>
+                <h3 id="temperature"></h3>
+                <img id="icon">
+
+                <ul id="details" class="list-group mt-3">
+                    <li class="list-group-item" id="humidity"></li>
+                    <li class="list-group-item" id="feelsLike"></li>
+                    <li class="list-group-item" id="tempMin"></li>
+                    <li class="list-group-item" id="tempMax"></li>
+                    <li class="list-group-item" id="sunrise"></li>
+                    <li class="list-group-item" id="sunset"></li>
+                </ul>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#locModal">
+                   Change Location
+                  </button>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="locModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="locModalLabel">Choose Location</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form id="w-form">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city">
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" class="form-control" id="state">
+                    </div>
+                </form>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="changeBtn"type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+    <script src="localStorage.js"></script>
+    <script src="weather.js"></script>
+    <script src="ui.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
