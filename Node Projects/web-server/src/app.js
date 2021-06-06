@@ -1,11 +1,24 @@
+
+const geocode=require('./utils/geocode')
+const forecast=require('./utils/forecast')
+
+
+
+
 const path=require('path') // node module to help us get file path. Refer node docs
 
 const express =require('express') // express is a function. 
 const hbs=require('hbs')
+const e = require('express')
 // console.log(path.join(__dirname,'../public')) // joins two path or join something to a file path
 
 const app=express(); // Call the express function to create a new express application
 // assigns All the express methods to const app
+
+const port=process.env.PORT || 3000 // Port at whice this project will be deployed on the browser. 
+// process.env is where we can access environment variables. Heroku sets the port at which it is deploying our project as envrionment variable.
+// process.env.PORT allows us to access the port value heroku has assigned and store it ion const port. 
+// || 3000 is done so that when we run locally(not on heroku) 3000 should be the value assigend to const port and the project will get deployed on port 3000
 
 const publicDir=path.join(__dirname,'../public') // path of public dir 
 const viewsPath=path.join(__dirname,'../templates/views') // Path of the dir where the views are 
@@ -81,11 +94,40 @@ app.get('/help',(req,res)=>{
         name:'Shantanu'
     })
 })
-app.get('/weather',(req,res)=>{
-res.send({
-    location: 'Mumbai',
-    forecast: 'Clear sky'
+app.get('/weather',(req,res)=>{ 
+const address=req.query.address
+
+
+if(!address){ // Query params coming from browser are part of of req.query object
+  // An address is mandatory hence this if clause
+  
+    return  res.send({error: 'Please provide an addres'}) //  we need to return a json object as fetch on the client side parses json.
+}
+
+// Also the error responses that we are sending should have the same key name. Here we have used'error' 
+// So that it becomes easier to access in the client side
+
+geocode(address,(geoErr,geoRes={})=>{ // Or destructure geoRes -> {latitude, longitude, location}
+if(geoErr){
+    return res.send({error :geoErr})
+} 
+    const coords=geoRes
+    forecast(coords.latitude,coords.longitude,(fcErr,fcRes)=>{
+          if(fcErr){
+             return res.send({error:fcErr})
+          }
+              res.send({
+                  location:geoRes.location,
+                  fCast:fcRes,
+                  address // used shorthand address:address
+              })
+          
+    })
+
 })
+
+ 
+
 })
 
 app.get('/help/*',(req,res)=>{
@@ -105,8 +147,8 @@ res.render('error',{
 })
 })
     
-app.listen(3000,()=>{// start a server on the specified port
- console.log('Server is up on 3000') // this callback is optional. Runs when server is up. Not displayed in the browser but in the terminal here
+app.listen(port,()=>{// start a server on the specified port
+ console.log('Server is up on port '+ port) // this callback is optional. Runs when server is up. Not displayed in the browser but in the terminal here
 })
 
 // if we visit localhost:3000, we'll see whats sent in the empty path send
